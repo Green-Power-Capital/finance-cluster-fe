@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Quản lý Dự án</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "primary-dark": "#1d6bc0",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "text-main": "#0d141b",
+              "text-secondary": "#4c739a",
+              "border-color": "#e7edf3",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-text-main dark:text-white min-h-screen flex flex-col font-display"
+  >
+    <!-- Top Navigation Bar -->
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-[1440px] mx-auto px-6 py-8">
+      <!-- Page Header & Actions -->
+      <div
+        class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8"
+      >
+        <div class="flex flex-col gap-2">
+          <h2
+            class="text-3xl font-black tracking-tight text-text-main dark:text-white"
+          >
+            Danh sách dự án
+          </h2>
+          <p class="text-text-secondary dark:text-gray-400 text-base">
+            Quản lý ngân sách các công trình đang thực hiện.
+          </p>
+        </div>
+      </div>
+      <!-- KPI Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div
+          id="totalProjectsCard"
+          class="bg-white dark:bg-[#1a2632] p-5 rounded-xl border border-border-color dark:border-gray-700 shadow-sm flex flex-col justify-between h-32"
+        >
+          <div class="flex justify-between items-start">
+            <p
+              class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
+            >
+              Tổng số dự án
+            </p>
+            <div
+              class="p-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl"
+                >folder_managed</span
+              >
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-text-main dark:text-white">0</p>
+          </div>
+        </div>
+        <div
+          id="activeProjectsCard"
+          class="bg-white dark:bg-[#1a2632] p-5 rounded-xl border border-border-color dark:border-gray-700 shadow-sm flex flex-col justify-between h-32"
+        >
+          <div class="flex justify-between items-start">
+            <p
+              class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
+            >
+              Đang tiến hành
+            </p>
+            <div
+              class="p-1.5 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl"
+                >construction</span
+              >
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-text-main dark:text-white">0</p>
+          </div>
+        </div>
+        <div
+          id="totalContractValueCard"
+          class="bg-white dark:bg-[#1a2632] p-5 rounded-xl border border-border-color dark:border-gray-700 shadow-sm flex flex-col justify-between h-32"
+        >
+          <div class="flex justify-between items-start">
+            <p
+              class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
+            >
+              Tổng giá trị hợp đồng
+            </p>
+            <div
+              class="p-1.5 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl">payments</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-text-main dark:text-white">
+              0 Tỷ
+            </p>
+          </div>
+        </div>
+        <div
+          id="completedProjectsCard"
+          class="bg-white dark:bg-[#1a2632] p-5 rounded-xl border border-border-color dark:border-gray-700 shadow-sm flex flex-col justify-between h-32"
+        >
+          <div class="flex justify-between items-start">
+            <p
+              class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
+            >
+              Đã hoàn thành
+            </p>
+            <div
+              class="p-1.5 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl">task_alt</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-text-main dark:text-white">0</p>
+          </div>
+        </div>
+      </div>
+      <!-- Filters & Toolbar -->
+      <div
+        class="bg-white dark:bg-[#1a2632] rounded-t-xl border border-border-color dark:border-gray-700 p-4"
+      >
+        <div class="flex flex-col lg:flex-row gap-4 justify-between">
+          <!-- Search & Filters -->
+          <div class="flex flex-1 flex-col sm:flex-row gap-4">
+            <div class="relative flex-1 max-w-md">
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary"
+              >
+                <span class="material-symbols-outlined">search</span>
+              </span>
+              <input
+                id="searchInput"
+                class="w-full h-11 pl-10 pr-4 rounded-lg border border-border-color dark:border-gray-600 bg-white dark:bg-[#253341] text-text-main dark:text-white placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm"
+                placeholder="Tìm kiếm tên dự án, mã dự án..."
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Data Table -->
+      <div
+        class="bg-white dark:bg-[#1a2632] border-x border-b border-border-color dark:border-gray-700 rounded-b-xl overflow-hidden shadow-sm"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr
+                class="bg-slate-50 dark:bg-[#253341] border-b border-border-color dark:border-gray-700"
+              >
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap"
+                >
+                  Mã dự án
+                </th>
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap"
+                >
+                  Tên dự án
+                </th>
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap"
+                >
+                  Chủ đầu tư
+                </th>
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap text-right"
+                >
+                  Giá trị HĐ (VNĐ)
+                </th>
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap text-right"
+                >
+                  Đã thu (VNĐ)
+                </th>
+                <th
+                  class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-text-secondary whitespace-nowrap text-right"
+                >
+                  Còn lại (VNĐ)
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="projectsTableBody"
+              class="divide-y divide-border-color dark:divide-gray-700"
+            >
+              <!-- Rows will be dynamically inserted here -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Table Footer -->
+        <div
+          id="tableFooter"
+          class="px-6 py-4 border-t border-border-color dark:border-gray-700 text-sm text-text-secondary dark:text-gray-400"
+        >
+          Đang tải dữ liệu...
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
