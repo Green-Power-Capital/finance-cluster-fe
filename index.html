@@ -57,25 +57,20 @@
   <body
     class="bg-background-light dark:bg-background-dark text-text-main dark:text-white min-h-screen flex flex-col font-display"
   >
-    <!-- Top Navigation Bar -->
-
     <!-- Main Content -->
     <main class="flex-1 w-full max-w-[1440px] mx-auto px-6 py-8">
-      <!-- Page Header & Actions -->
-      <div
-        class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8"
-      >
-        <div class="flex flex-col gap-2">
-          <h2
-            class="text-3xl font-black tracking-tight text-text-main dark:text-white"
-          >
-            Danh sách dự án
-          </h2>
-          <p class="text-text-secondary dark:text-gray-400 text-base">
-            Quản lý ngân sách các công trình đang thực hiện.
-          </p>
-        </div>
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h2
+          class="text-3xl font-black tracking-tight text-text-main dark:text-white"
+        >
+          Danh sách dự án
+        </h2>
+        <p class="text-text-secondary dark:text-gray-400 text-base mt-2">
+          Quản lý ngân sách các công trình đang thực hiện.
+        </p>
       </div>
+
       <!-- KPI Stats -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div
@@ -165,32 +160,10 @@
           </div>
         </div>
       </div>
-      <!-- Filters & Toolbar -->
-      <div
-        class="bg-white dark:bg-[#1a2632] rounded-t-xl border border-border-color dark:border-gray-700 p-4"
-      >
-        <div class="flex flex-col lg:flex-row gap-4 justify-between">
-          <!-- Search & Filters -->
-          <div class="flex flex-1 flex-col sm:flex-row gap-4">
-            <div class="relative flex-1 max-w-md">
-              <span
-                class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary"
-              >
-                <span class="material-symbols-outlined">search</span>
-              </span>
-              <input
-                id="searchInput"
-                class="w-full h-11 pl-10 pr-4 rounded-lg border border-border-color dark:border-gray-600 bg-white dark:bg-[#253341] text-text-main dark:text-white placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm"
-                placeholder="Tìm kiếm tên dự án, mã dự án..."
-                type="text"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+
       <!-- Data Table -->
       <div
-        class="bg-white dark:bg-[#1a2632] border-x border-b border-border-color dark:border-gray-700 rounded-b-xl overflow-hidden shadow-sm"
+        class="bg-white dark:bg-[#1a2632] border border-border-color dark:border-gray-700 rounded-xl overflow-hidden shadow-sm"
       >
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">

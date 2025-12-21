@@ -113,34 +113,6 @@ const projectsData = [
     endDate: "2025-03-31",
     progress: 45,
   },
-  {
-    id: 9,
-    code: "LV-2023-042",
-    name: "Cầu vượt sông Hồng",
-    location: "Hà Nội",
-    investor: "Bộ Giao thông Vận tải",
-    investorLogo: "",
-    status: "completed",
-    contractValue: 78000000000,
-    collected: 78000000000,
-    startDate: "2023-03-01",
-    endDate: "2023-12-20",
-    progress: 100,
-  },
-  {
-    id: 10,
-    code: "LV-2024-007",
-    name: "Nhà máy Xử lý Rác thải Eco",
-    location: "Hà Nam",
-    investor: "Tập đoàn Môi trường Việt",
-    investorLogo: "",
-    status: "active",
-    contractValue: 45000000000,
-    collected: 22000000000,
-    startDate: "2024-07-15",
-    endDate: "2025-02-28",
-    progress: 40,
-  },
 ];
 
 // Cấu hình ứng dụng
@@ -148,15 +120,10 @@ const appConfig = {
   currency: "VND",
   language: "vi-VN",
   dateFormat: "dd/MM/yyyy",
-  itemsPerPage: 10,
 };
 
 // Trạng thái ứng dụng
 let appState = {
   filteredProjects: [...projectsData],
   currentPage: 1,
-  sortField: "code",
-  sortDirection: "asc",
-  searchTerm: "",
-  statusFilter: "",
 };
