@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Meta tags chống cache -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>Chi tiết Dự án</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles.css?v=1.0" />
+
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "primary-dark": "#1d6bc0",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "text-main": "#0d141b",
+              "text-secondary": "#4c739a",
+              "border-color": "#e7edf3",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-text-main dark:text-white min-h-screen flex flex-col font-display"
+  >
+    <!-- Header -->
+    <header
+      class="bg-white dark:bg-[#1a2632] border-b border-border-color dark:border-gray-700 shadow-sm"
+    >
+      <div class="w-full max-w-[1440px] mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <!-- Logo và tên công ty -->
+          <div class="flex items-center gap-3">
+            <a
+              href="../index.html"
+              class="p-2 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://toanthanh.vn/wp-content/uploads/2025/04/toan-thanh-logo.png"
+                alt="Logo TOÀN THÀNH SOLAR ENERGY"
+                class="logo"
+                width="100"
+                height="50"
+              />
+            </a>
+
+            <div class="flex flex-col">
+              <h1 class="text-xl font-bold text-text-main dark:text-white">
+                CÔNG TY TNHH TOÀN THÀNH SOLAR ENERGY
+              </h1>
+              <p class="text-sm text-text-secondary dark:text-gray-400">
+                Hệ thống quản lý dự án & ngân sách
+              </p>
+            </div>
+          </div>
+
+          <!-- Nút quay lại -->
+          <a
+            href="../index.html"
+            class="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            Quay lại danh sách
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-[1440px] mx-auto px-6 py-8">
+      <div id="projectDetailContent">
+        <!-- Nội dung sẽ được load bằng JavaScript -->
+        <div class="flex items-center justify-center h-64">
+          <div class="text-center">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"
+            ></div>
+            <p class="text-text-secondary dark:text-gray-400">
+              Đang tải thông tin dự án...
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="../data.js?v=1.0"></script>
+    <script src="project-detail.js?v=1.0"></script>
+  </body>
+</html>
