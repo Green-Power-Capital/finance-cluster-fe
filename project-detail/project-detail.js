@@ -27,15 +27,35 @@ function formatCurrency(amount) {
  * Format số tiền với đơn vị (Tỷ/Triệu)
  */
 function formatCurrencyWithUnit(amount) {
-  if (amount >= 1000000000) {
-    const billions = (amount / 1000000000).toFixed(3);
-    return `${billions} Tỷ`;
-  } else if (amount >= 1000000) {
-    const millions = (amount / 1000000).toFixed(2);
-    return `${millions} Triệu`;
+  // 1. Ép kiểu về số an toàn (xử lý cả trường hợp input là string "1600000000")
+  const num = Number(amount);
+
+  // Nếu không phải số hoặc bằng 0 thì trả về 0
+  if (isNaN(num) || num === 0) return "0";
+
+  let result = "";
+  let unit = "";
+
+  if (num >= 1000000000) {
+    // Trường hợp Tỷ
+    // toFixed(2) giữ 2 số lẻ -> parseFloat để cắt số 0 thừa -> toString để replace dấu
+    result = parseFloat((num / 1000000000).toFixed(2))
+      .toString()
+      .replace(".", ",");
+    unit = " Tỷ";
+  } else if (num >= 1000000) {
+    // Trường hợp Triệu
+    result = parseFloat((num / 1000000).toFixed(2))
+      .toString()
+      .replace(".", ",");
+    unit = " Triệu";
   } else {
-    return formatCurrency(amount);
+    // Trường hợp nhỏ hơn 1 Triệu (ví dụ 500.000)
+    // Dùng Regex để thêm dấu chấm phân cách hàng nghìn thủ công (không cần toLocaleString)
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
+
+  return `${result}${unit}`;
 }
 
 /**
@@ -48,7 +68,7 @@ function calculateRemaining(contractValue, collected) {
 /**
  * Tính tỷ lệ phần trăm
  */
-function calculatePercentage(totalAmount, paidAmount) {
+function calculatePercentage(paidAmount, totalAmount) {
   try {
     const total = parseFloat(totalAmount);
     const paid = parseFloat(paidAmount);
@@ -58,7 +78,7 @@ function calculatePercentage(totalAmount, paidAmount) {
     }
 
     const percentage = (paid / total) * 100;
-    return Math.min(Math.max(percentage, 0), 100);
+    return parseFloat(Math.min(Math.max(percentage, 0), 100).toFixed(1));
   } catch (error) {
     console.error("Error calculating percentage:", error);
     return 0;
@@ -133,7 +153,7 @@ async function fetchProjectById(projectId) {
 /**
  * Tạo timeline các đợt thu từ payments
  */
-function createPaymentTimeline(payments) {
+function createPaymentTimeline(contractValue, payments) {
   if (!payments || !Array.isArray(payments) || payments.length === 0) {
     return `
           <div class="text-center py-8 text-text-secondary dark:text-gray-400">
@@ -152,15 +172,7 @@ function createPaymentTimeline(payments) {
       return `
           <div class="flex items-start gap-4 p-4 border-b border-border-color dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
               <div class="flex-shrink-0">
-                  <div class="size-10 rounded-full flex items-center justify-center ${
-                    isPaid
-                      ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-                      : "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                  }">
-                      <span class="material-symbols-outlined">
-                          ${isPaid ? "check_circle" : "pending"}
-                      </span>
-                  </div>
+                  
               </div>
               <div class="flex-1">
                   <div class="flex justify-between items-start">
@@ -169,9 +181,6 @@ function createPaymentTimeline(payments) {
                             payment.name
                           }</h4>
                           <div class="flex flex-col gap-1 mt-1">
-                              <p class="text-sm text-text-secondary dark:text-gray-400">
-                                  Hạn: <strong>${dueDate}</strong>
-                              </p>
                               ${
                                 payment.condition
                                   ? `
@@ -189,13 +198,13 @@ function createPaymentTimeline(payments) {
                               ? "text-emerald-600 dark:text-emerald-400"
                               : "text-amber-600 dark:text-amber-400"
                           }">
-                              ${formatCurrency(payment.amount)} VNĐ
+                              ${formatCurrency(payment.amount)}
                           </p>
                           <p class="text-sm text-text-secondary dark:text-gray-400">
                               ${calculatePercentage(
                                 payment.amount,
-                                110592000000
-                              ).toFixed(1)}% hợp đồng
+                                contractValue
+                              ).toFixed(1)}%
                           </p>
                       </div>
                   </div>
@@ -213,9 +222,6 @@ function createPaymentTimeline(payments) {
                               ? `Đã thanh toán (${paidDate})`
                               : "Chờ thanh toán"
                           }
-                      </span>
-                      <span class="text-xs text-text-secondary dark:text-gray-400">
-                          ID: ${payment.paymentId}
                       </span>
                   </div>
               </div>
@@ -288,10 +294,6 @@ function renderProjectDetail(apiProject) {
                                   : "N/A"
                               }
                           </span>
-                          <span class="flex items-center gap-1">
-                              <span class="material-symbols-outlined align-middle text-base">tag</span>
-                              ${apiProject.projectCode}
-                          </span>
                       </div>
                   </div>
               </div>
@@ -300,129 +302,122 @@ function renderProjectDetail(apiProject) {
           <!-- Thông tin chính - 2 cột -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <!-- Thông tin tài chính - BÊN TRÁI -->
-              <div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm h-full">
-                  <h3 class="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
-                      <span class="material-symbols-outlined">monetization_on</span>
-                      Thông tin tài chính
-                  </h3>
-                  
-                  <div class="space-y-6">
-                      <!-- Tổng quan tài chính -->
-                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-lg">
-                              <div class="flex items-center gap-3 mb-3">
-                                  <div class="p-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg">
-                                      <span class="material-symbols-outlined">payments</span>
-                                  </div>
-                                  <div>
-                                      <p class="text-sm text-text-secondary dark:text-gray-400">Giá trị hợp đồng</p>
-                                      <p class="text-2xl font-bold text-text-main dark:text-white">${formatCurrencyWithUnit(
-                                        apiProject.contractValue
-                                      )}</p>
-                                  </div>
-                              </div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">${formatCurrency(
-                                apiProject.contractValue
-                              )} VNĐ</p>
-                          </div>
-                          
-                          <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-lg">
-                              <div class="flex items-center gap-3 mb-3">
-                                  <div class="p-2 bg-emerald-100 dark:bg-emerald-800/40 text-emerald-600 dark:text-emerald-400 rounded-lg">
-                                      <span class="material-symbols-outlined">savings</span>
-                                  </div>
-                                  <div>
-                                      <p class="text-sm text-emerald-700 dark:text-emerald-300">Tổng đã thu</p>
-                                      <p class="text-2xl font-bold text-emerald-700 dark:text-emerald-300">${formatCurrencyWithUnit(
-                                        collected
-                                      )}</p>
-                                  </div>
-                              </div>
-                              <p class="text-sm text-emerald-600 dark:text-emerald-400">
-                                  ${formatCurrency(
-                                    collected
-                                  )} VNĐ • ${collectedPercent}%
-                              </p>
-                          </div>
-                          
-                          <div class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-lg">
-                              <div class="flex items-center gap-3 mb-3">
-                                  <div class="p-2 bg-amber-100 dark:bg-amber-800/40 text-amber-600 dark:text-amber-400 rounded-lg">
-                                      <span class="material-symbols-outlined">pending</span>
-                                  </div>
-                                  <div>
-                                      <p class="text-sm text-amber-700 dark:text-amber-300">Tổng chưa thu</p>
-                                      <p class="text-2xl font-bold text-amber-700 dark:text-amber-300">${formatCurrencyWithUnit(
-                                        remaining
-                                      )}</p>
-                                  </div>
-                              </div>
-                              <p class="text-sm text-amber-600 dark:text-amber-400">
-                                  ${formatCurrency(
-                                    remaining
-                                  )} VNĐ • ${remainingPercent}%
-                              </p>
-                          </div>
-                      </div>
+<div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm h-full">
+    <h3 class="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined">monetization_on</span>
+        Thông tin tài chính
+    </h3>
+    
+    <div class="space-y-6">
+        <!-- Giá trị hợp đồng - HÀNG DUY NHẤT -->
+        <div class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-xl shadow-sm">
+                        <span class="material-symbols-outlined text-2xl">payments</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Giá trị hợp đồng</p>
+                        <p class="text-3xl font-bold text-text-main dark:text-white">${formatCurrencyWithUnit(
+                          apiProject.contractValue
+                        )}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Tổng số tiền</p>
+                    <p class="text-xl font-semibold text-primary dark:text-primary-light">${formatCurrency(
+                      apiProject.contractValue
+                    )}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tổng đã thu và Tổng chưa thu - HÀNG THỨ 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Tổng đã thu -->
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-900/10 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-emerald-100 dark:bg-emerald-800/40 text-emerald-600 dark:text-emerald-400 rounded-lg">
+                            <span class="material-symbols-outlined">savings</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">Tổng đã thu</p>
+                            <p class="text-2xl font-bold text-emerald-700 dark:text-emerald-300">${formatCurrencyWithUnit(
+                              collected
+                            )}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-800/40 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
+                            ${collectedPercent}%
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sm text-emerald-600 dark:text-emerald-400">
+                        <span class="font-medium">Số tiền:</span> ${formatCurrency(
+                          collected
+                        )}
+                    </p>
+                   
+                </div>
+            </div>
+            
+            <!-- Tổng chưa thu -->
+            <div class="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-900/10 p-5 rounded-xl border border-amber-200 dark:border-amber-800/50 shadow-sm">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-amber-100 dark:bg-amber-800/40 text-amber-600 dark:text-amber-400 rounded-lg">
+                            <span class="material-symbols-outlined">pending</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-amber-700 dark:text-amber-300 mb-1">Tổng chưa thu</p>
+                            <p class="text-2xl font-bold text-amber-700 dark:text-amber-300">${formatCurrencyWithUnit(
+                              remaining
+                            )}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-800/40 text-amber-700 dark:text-amber-400 text-sm font-medium">
+                            ${remainingPercent}%
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sm text-amber-600 dark:text-amber-400">
+                        <span class="font-medium">Số tiền:</span> ${formatCurrency(
+                          remaining
+                        )}
+                    </p>
+            
+                </div>
+            </div>
+        </div>
 
-                      <!-- Thanh tiến độ thu tiền -->
-                      <div class="bg-white dark:bg-[#1a2632] p-5 rounded-lg border border-border-color dark:border-gray-700">
-                          <div class="flex justify-between mb-3">
-                              <div>
-                                  <h4 class="font-medium text-text-main dark:text-white mb-1">Tiến độ thu tiền</h4>
-                                  <p class="text-sm text-text-secondary dark:text-gray-400">${collectedPercent}% hợp đồng đã được thanh toán</p>
-                              </div>
-                              <div class="text-right">
-                                  <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">${collectedPercent}%</p>
-                                  <p class="text-sm text-text-secondary dark:text-gray-400">Đã thu</p>
-                              </div>
-                          </div>
-                          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
-                              <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-3 rounded-full" style="width: ${collectedPercent}%"></div>
-                          </div>
-                          <div class="flex justify-between text-xs text-text-secondary dark:text-gray-400">
-                              <span>0 VNĐ</span>
-                              <span>${formatCurrency(
-                                apiProject.contractValue
-                              )} VNĐ</span>
-                          </div>
-                      </div>
-
-                      <!-- Thông tin chi phí ước tính -->
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                              <div class="flex items-center justify-between mb-2">
-                                  <span class="font-medium text-blue-700 dark:text-blue-300">Chi phí ước tính</span>
-                                  <span class="text-2xl font-bold text-blue-700 dark:text-blue-300">${formatCurrencyWithUnit(
-                                    apiProject.estimatedCost
-                                  )}</span>
-                              </div>
-                              <p class="text-sm text-blue-600 dark:text-blue-400">
-                                  ${formatCurrency(
-                                    apiProject.estimatedCost
-                                  )} VNĐ
-                              </p>
-                          </div>
-                          
-                          <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                              <div class="flex items-center justify-between mb-2">
-                                  <span class="font-medium text-purple-700 dark:text-purple-300">Lợi nhuận dự kiến</span>
-                                  <span class="text-2xl font-bold text-purple-700 dark:text-purple-300">${formatCurrencyWithUnit(
-                                    apiProject.contractValue -
-                                      apiProject.estimatedCost
-                                  )}</span>
-                              </div>
-                              <p class="text-sm text-purple-600 dark:text-purple-400">
-                                  ${calculatePercentage(
-                                    apiProject.contractValue -
-                                      apiProject.estimatedCost,
-                                    apiProject.contractValue
-                                  )}% hợp đồng
-                              </p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+        <!-- Thanh tiến độ thu tiền -->
+        <div class="bg-white dark:bg-[#1a2632] p-5 rounded-lg border border-border-color dark:border-gray-700 shadow-sm">
+            <div class="flex justify-between mb-3">
+                <div>
+                    <h4 class="font-medium text-text-main dark:text-white mb-1">Tiến độ thu tiền</h4>
+                    <p class="text-sm text-text-secondary dark:text-gray-400">${collectedPercent}% hợp đồng đã được thanh toán</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">${collectedPercent}%</p>
+                    <p class="text-sm text-text-secondary dark:text-gray-400">Đã thu</p>
+                </div>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
+                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-3 rounded-full" style="width: ${collectedPercent}%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-text-secondary dark:text-gray-400">
+                <span>0 VNĐ</span>
+                <span>${formatCurrency(apiProject.contractValue)} VNĐ</span>
+            </div>
+        </div>
+        
+    </div>
+</div>
 
               <!-- Timeline các đợt thu - BÊN PHẢI -->
               <div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm h-full flex flex-col">
@@ -443,31 +438,12 @@ function renderProjectDetail(apiProject) {
                       </div>
                   </div>
                   
-                  <div class="flex-1 overflow-y-auto max-h-[400px]">
+                  <div class="flex-1 overflow-y-auto max-h-[600px]">
                       <div class="space-y-1">
-                          ${createPaymentTimeline(apiProject.payments)}
-                      </div>
-                  </div>
-                  
-                  <!-- Tổng kết payments -->
-                  <div class="mt-6 pt-6 border-t border-border-color dark:border-gray-700">
-                      <div class="grid grid-cols-2 gap-4">
-                          <div class="text-center">
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Số đợt thanh toán</p>
-                              <p class="text-2xl font-bold text-text-main dark:text-white">${
-                                apiProject.payments.length
-                              }</p>
-                          </div>
-                          <div class="text-center">
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Đã thanh toán</p>
-                              <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                                  ${
-                                    apiProject.payments.filter(
-                                      (p) => p.status === "paid"
-                                    ).length
-                                  }
-                              </p>
-                          </div>
+                          ${createPaymentTimeline(
+                            apiProject.contractValue,
+                            apiProject.payments
+                          )}
                       </div>
                   </div>
               </div>
@@ -503,20 +479,7 @@ function renderProjectDetail(apiProject) {
                           <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full" style="width: ${toanThanhSpentPercent}%"></div>
                       </div>
                       
-                      <div class="grid grid-cols-2 gap-4 mt-4">
-                          <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Chi phí vật tư</p>
-                              <p class="font-bold text-blue-600 dark:text-blue-400">${formatCurrency(
-                                totalToanThanhSpent * 0.6
-                              )} VNĐ</p>
-                          </div>
-                          <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Chi phí nhân công</p>
-                              <p class="font-bold text-blue-600 dark:text-blue-400">${formatCurrency(
-                                totalToanThanhSpent * 0.4
-                              )} VNĐ</p>
-                          </div>
-                      </div>
+                      
                   </div>
               </div>
 
@@ -547,21 +510,7 @@ function renderProjectDetail(apiProject) {
                       <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                           <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full" style="width: ${lamVuSpentPercent}%"></div>
                       </div>
-                      
-                      <div class="grid grid-cols-2 gap-4 mt-4">
-                          <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Chi phí quản lý</p>
-                              <p class="font-bold text-purple-600 dark:text-purple-400">${formatCurrency(
-                                totalLamVuSpent * 0.5
-                              )} VNĐ</p>
-                          </div>
-                          <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Chi phí khác</p>
-                              <p class="font-bold text-purple-600 dark:text-purple-400">${formatCurrency(
-                                totalLamVuSpent * 0.5
-                              )} VNĐ</p>
-                          </div>
-                      </div>
+                    
                   </div>
               </div>
           </div>
@@ -640,83 +589,6 @@ function renderProjectDetail(apiProject) {
                           <span class="text-amber-600 dark:text-amber-400">50%</span>
                           <span class="text-amber-600 dark:text-amber-400">75%</span>
                           <span class="text-amber-600 dark:text-amber-400">100%</span>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-          <!-- Tóm tắt thông tin dự án -->
-          <div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm">
-              <h3 class="text-lg font-bold text-text-main dark:text-white mb-6">Thông tin tổng hợp</h3>
-              
-              <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div class="flex items-center gap-3">
-                          <div class="p-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg">
-                              <span class="material-symbols-outlined">calendar_today</span>
-                          </div>
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Ngày bắt đầu</p>
-                              <p class="font-bold text-text-main dark:text-white">${formatDate(
-                                apiProject.startDate
-                              )}</p>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div class="flex items-center gap-3">
-                          <div class="p-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg">
-                              <span class="material-symbols-outlined">event_available</span>
-                          </div>
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Ngày kết thúc</p>
-                              <p class="font-bold text-text-main dark:text-white">${formatDate(
-                                apiProject.endDate
-                              )}</p>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div class="flex items-center gap-3">
-                          <div class="p-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg">
-                              <span class="material-symbols-outlined">auto_graph</span>
-                          </div>
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Tiến độ dự án</p>
-                              <p class="font-bold text-text-main dark:text-white">${
-                                apiProject.progress || 0
-                              }%</p>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div class="flex items-center gap-3">
-                          <div class="p-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg">
-                              <span class="material-symbols-outlined">work</span>
-                          </div>
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">Trạng thái</p>
-                              <p class="font-bold ${
-                                apiProject.status === "in_progress"
-                                  ? "text-blue-600 dark:text-blue-400"
-                                  : apiProject.status === "completed"
-                                  ? "text-emerald-600 dark:text-emerald-400"
-                                  : "text-amber-600 dark:text-amber-400"
-                              }">
-                                  ${
-                                    apiProject.status === "in_progress"
-                                      ? "Đang thực hiện"
-                                      : apiProject.status === "completed"
-                                      ? "Đã hoàn thành"
-                                      : apiProject.status === "planning"
-                                      ? "Đang lập kế hoạch"
-                                      : "Đã hủy"
-                                  }
-                              </p>
-                          </div>
                       </div>
                   </div>
               </div>

@@ -10,6 +10,9 @@ const DOM = {
   totalContractValueCard: document.querySelector(
     "#totalContractValueCard .text-3xl"
   ),
+  totalContractNumberValueCard: document.querySelector(
+    "#totalContractValueCard .value"
+  ),
   totalCollectedCard: document.querySelector("#totalCollectedCard .text-3xl"),
   totalRemainingCard: document.querySelector("#totalRemainingCard .text-3xl"),
 
@@ -122,15 +125,35 @@ function formatCurrency(amount) {
  * Format số tiền với đơn vị (Tỷ/Triệu)
  */
 function formatCurrencyWithUnit(amount) {
-  if (amount >= 1000000000) {
-    const billions = (amount / 1000000000).toFixed(2);
-    return `${billions} Tỷ`;
-  } else if (amount >= 1000000) {
-    const millions = (amount / 1000000).toFixed(2);
-    return `${millions} Triệu`;
+  // 1. Ép kiểu về số an toàn (xử lý cả trường hợp input là string "1600000000")
+  const num = Number(amount);
+
+  // Nếu không phải số hoặc bằng 0 thì trả về 0
+  if (isNaN(num) || num === 0) return "0";
+
+  let result = "";
+  let unit = "";
+
+  if (num >= 1000000000) {
+    // Trường hợp Tỷ
+    // toFixed(2) giữ 2 số lẻ -> parseFloat để cắt số 0 thừa -> toString để replace dấu
+    result = parseFloat((num / 1000000000).toFixed(2))
+      .toString()
+      .replace(".", ",");
+    unit = " Tỷ";
+  } else if (num >= 1000000) {
+    // Trường hợp Triệu
+    result = parseFloat((num / 1000000).toFixed(2))
+      .toString()
+      .replace(".", ",");
+    unit = " Triệu";
   } else {
-    return formatCurrency(amount);
+    // Trường hợp nhỏ hơn 1 Triệu (ví dụ 500.000)
+    // Dùng Regex để thêm dấu chấm phân cách hàng nghìn thủ công (không cần toLocaleString)
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
+
+  return `${result}${unit}`;
 }
 
 /**
@@ -189,6 +212,8 @@ function updateKPIStats(projects) {
   DOM.totalContractValueCard.textContent = formatCurrencyWithUnit(
     kpis.totalContractValue
   );
+  DOM.totalContractNumberValueCard.textContent =
+    kpis.totalContractValue.toLocaleString() + " VNĐ";
   DOM.totalCollectedCard.textContent = formatCurrencyWithUnit(
     kpis.totalCollected
   );
@@ -197,8 +222,8 @@ function updateKPIStats(projects) {
   );
 
   // Cập nhật phần trăm
-  DOM.collectedPercentage.textContent = `${kpis.collectedPercentage}% so với tổng HĐ`;
-  DOM.remainingPercentage.textContent = `${kpis.remainingPercentage}% so với tổng HĐ`;
+  DOM.collectedPercentage.textContent = `${kpis.totalCollected.toLocaleString()} VNĐ`;
+  DOM.remainingPercentage.textContent = `${kpis.totalRemaining.toLocaleString()} VNĐ`;
 }
 
 /**
