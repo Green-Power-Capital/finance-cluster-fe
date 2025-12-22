@@ -20,7 +20,8 @@ const DOM = {
 
 // ================ Configuration ================
 const API_CONFIG = {
-  BASE_URL: "http://localhost:3000",
+  //   BASE_URL: "http://localhost:3000",
+  BASE_URL: "project.toanthanh.info",
   ENDPOINTS: {
     PROJECTS: "/api/projects",
   },
