@@ -3,7 +3,8 @@
 // ================ CONFIGURATION ================
 const EXPENSE_CONFIG = {
   // Base URL của API (cần khớp với project-detail.js hoặc cấu hình chung)
-  BASE_URL: "http://localhost:3000",
+  //   BASE_URL: "http://localhost:3000",
+  BASE_URL: "https://finance-cluster-be.onrender.com",
   // ID của công ty Toàn Thành (Hardcoded theo yêu cầu)
   BUYER_ID: "64a1b2c3d4e5f67890123456",
   ENDPOINTS: {
