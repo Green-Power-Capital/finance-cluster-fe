@@ -947,7 +947,9 @@ async function showLamVuTransferredDetails() {
       title:
         `Tổng tiền Lâm Vũ đã chuyển: ` +
         formatCurrency(totalTransferred) +
-        ` VNĐ`,
+        ` VNĐ - ` +
+        transactions.length +
+        ` giao dịch`,
       content: tableContent,
     });
   } catch (error) {
@@ -1176,7 +1178,7 @@ function renderToanThanhTable(contracts) {
 function renderLamVuTable(transactions) {
   // Nhóm giao dịch theo ngày (có thể theo dự án nếu có thông tin)
   const rows = transactions
-    .map((transaction) => {
+    .map((transaction, index) => {
       // Format ngày đơn giản (chỉ ngày tháng năm)
       const formattedDate = formatSimpleDate(
         transaction.paymentDate || transaction.createdAt
@@ -1184,6 +1186,9 @@ function renderLamVuTable(transactions) {
 
       return `
       <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+        <td class="p-4 text-sm text-center text-text-main dark:text-white font-medium">
+          ${index + 1}
+        </td>
         <td class="p-4 text-sm text-text-secondary dark:text-gray-300">
           <div class="text-text-main dark:text-white mb-1">
             ${transaction.description || "Không có mô tả"}
@@ -1202,12 +1207,13 @@ function renderLamVuTable(transactions) {
 
   return `
     <div class="popup-table-container">
-      <table class="popup-table">
+      <table class="popup-table w-full border-collapse">
         <thead>
-          <tr>
-            <th class="rounded-tl-lg text-left">Nội dung chuyển tiền</th>
-            <th class="text-right">Số tiền</th>
-            <th class="text-center rounded-tr-lg">Ngày chuyển</th>
+          <tr class="bg-gray-50 dark:bg-gray-800">
+            <th class="p-4 text-sm font-medium text-text-secondary dark:text-gray-400 text-center rounded-tl-lg">STT</th>
+            <th class="p-4 text-sm font-medium text-text-secondary dark:text-gray-400 text-left">Nội dung chuyển tiền</th>
+            <th class="p-4 text-sm font-medium text-text-secondary dark:text-gray-400 text-right">Số tiền</th>
+            <th class="p-4 text-sm font-medium text-text-secondary dark:text-gray-400 text-center rounded-tr-lg">Ngày chuyển</th>
           </tr>
         </thead>
         <tbody>
