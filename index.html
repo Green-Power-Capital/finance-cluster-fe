@@ -117,23 +117,25 @@
           id="totalProjectsCard"
           class="bg-white dark:bg-[#1a2632] p-5 rounded-xl border border-border-color dark:border-gray-700 shadow-sm flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-200"
         >
-          <div class="flex justify-between items-start">
-            <p
-              class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
-            >
-              Tổng số dự án
-            </p>
-            <div
-              class="p-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-md"
-            >
-              <span class="material-symbols-outlined text-xl"
-                >folder_managed</span
+          <a href="contract-create.html/index.html">
+            <div class="flex justify-between items-start">
+              <p
+                class="text-text-secondary dark:text-gray-400 text-sm font-semibold"
               >
+                Tổng số dự án
+              </p>
+              <div
+                class="p-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-md"
+              >
+                <span class="material-symbols-outlined text-xl"
+                  >folder_managed</span
+                >
+              </div>
             </div>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-text-main dark:text-white">0</p>
-          </div>
+            <div>
+              <p class="text-3xl font-bold text-text-main dark:text-white">0</p>
+            </div>
+          </a>
         </div>
 
         <!-- 2. Tổng giá trị hợp đồng -->
@@ -172,7 +174,7 @@
             <p
               class="text-emerald-700 dark:text-emerald-300 text-sm font-semibold"
             >
-              Tổng tiền đã thu
+              Tổng tiền dự án đã thu
             </p>
             <div
               class="p-1.5 bg-emerald-100 dark:bg-emerald-800/40 text-emerald-600 dark:text-emerald-400 rounded-md"
@@ -202,7 +204,7 @@
         >
           <div class="flex justify-between items-start">
             <p class="text-amber-700 dark:text-amber-300 text-sm font-semibold">
-              Tổng tiền chưa thu
+              Tổng tiền dự án chưa thu
             </p>
             <div
               class="p-1.5 bg-amber-100 dark:bg-amber-800/40 text-amber-600 dark:text-amber-400 rounded-md"
@@ -219,6 +221,108 @@
               class="text-sm text-amber-600 dark:text-amber-400 mt-1"
             >
               0% so với tổng HĐ
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 ô chi phí mới -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <!-- 1. Tổng tiền Toàn Thành đã chi -->
+        <div
+          id="totalToanThanhSpentCard"
+          class="bg-toanthanh dark:bg-toanthanh p-5 rounded-xl border border-blue-200 dark:border-blue-800/50 shadow-sm flex flex-col justify-between clickable-card"
+          onclick="showToanThanhDetails()"
+        >
+          <div class="flex justify-between items-start">
+            <p class="text-blue-700 dark:text-blue-300 text-sm font-semibold">
+              Tổng tiền Toàn Thành đã chi
+            </p>
+            <div
+              class="p-1.5 bg-blue-100 dark:bg-blue-800/40 text-blue-600 dark:text-blue-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl"
+                >account_balance</span
+              >
+            </div>
+          </div>
+          <div>
+            <p
+              id="totalToanThanhSpentValue"
+              class="text-3xl font-bold text-blue-700 dark:text-blue-300"
+            >
+              0
+            </p>
+            <p
+              id="totalToanThanhSpentDetail"
+              class="text-sm text-blue-600 dark:text-blue-400 mt-1"
+            >
+              VNĐ
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Tổng tiền Lâm Vũ đã chuyển cho Toàn Thành -->
+        <div
+          id="totalLamVuTransferredCard"
+          class="bg-lamvu dark:bg-lamvu p-5 rounded-xl border border-purple-200 dark:border-purple-800/50 shadow-sm flex flex-col justify-between clickable-card"
+          onclick="showLamVuTransferredDetails()"
+        >
+          <div class="flex justify-between items-start">
+            <p
+              class="text-purple-700 dark:text-purple-300 text-sm font-semibold"
+            >
+              Tổng tiền Lâm Vũ đã chuyển
+            </p>
+            <div
+              class="p-1.5 bg-purple-100 dark:bg-purple-800/40 text-purple-600 dark:text-purple-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl">swap_horiz</span>
+            </div>
+          </div>
+          <div>
+            <p
+              id="totalLamVuTransferredValue"
+              class="text-3xl font-bold text-purple-700 dark:text-purple-300"
+            >
+              0
+            </p>
+            <p
+              id="totalLamVuTransferredDetail"
+              class="text-sm text-purple-600 dark:text-purple-400 mt-1"
+            >
+              VNĐ
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. Tổng tiền Lâm Vũ cần chuyển cho Toàn Thành -->
+        <div
+          id="totalLamVuRemainingCard"
+          class="bg-remaining dark:bg-remaining p-5 rounded-xl border border-amber-200 dark:border-amber-800/50 shadow-sm flex flex-col justify-between"
+        >
+          <div class="flex justify-between items-start">
+            <p class="text-amber-700 dark:text-amber-300 text-sm font-semibold">
+              Tổng tiền Lâm Vũ cần chuyển
+            </p>
+            <div
+              class="p-1.5 bg-amber-100 dark:bg-amber-800/40 text-amber-600 dark:text-amber-400 rounded-md"
+            >
+              <span class="material-symbols-outlined text-xl">pending</span>
+            </div>
+          </div>
+          <div>
+            <p
+              id="totalLamVuRemainingValue"
+              class="text-3xl font-bold text-amber-700 dark:text-amber-300"
+            >
+              0
+            </p>
+            <p
+              id="totalLamVuRemainingDetail"
+              class="text-sm text-amber-600 dark:text-amber-400 mt-1"
+            >
+              VNĐ
             </p>
           </div>
         </div>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Meta tags chống cache -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>Tạo Hợp Đồng Mới - Hệ Thống Quản Lý Tài Chính</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="contract-create.css?v=1.1" />
+
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2b8cee",
+              "primary-dark": "#1d6bc0",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "text-main": "#0d141b",
+              "text-secondary": "#4c739a",
+              "border-color": "#e7edf3",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-text-main dark:text-white min-h-screen flex flex-col font-display"
+  >
+    <!-- Header (Giống trang index) -->
+    <header
+      class="bg-white dark:bg-[#1a2632] border-b border-border-color dark:border-gray-700 shadow-sm"
+    >
+      <div class="w-full max-w-[1440px] mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <!-- Logo/Icon -->
+            <div class="p-2 rounded-lg">
+              <img
+                src="https://toanthanh.vn/wp-content/uploads/2025/04/toan-thanh-logo.png"
+                alt="Logo TOÀN THÀNH SOLAR ENERGY"
+                class="logo"
+                width="100"
+                height="50"
+              />
+            </div>
+
+            <!-- Tên công ty -->
+            <div class="flex flex-col">
+              <h1 class="text-xl font-bold text-text-main dark:text-white">
+                CÔNG TY TNHH TOÀN THÀNH SOLAR ENERGY
+              </h1>
+              <p class="text-sm text-text-secondary dark:text-gray-400">
+                Hệ thống quản lý dự án & ngân sách
+              </p>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex items-center gap-4">
+            <a
+              href="../index.html"
+              class="flex items-center gap-2 px-4 py-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined">home</span>
+              <span>Trang chủ</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-[1440px] mx-auto px-6 py-8">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <div class="flex items-center gap-4 mb-4">
+          <a
+            href="../index.html"
+            class="flex items-center gap-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Quay lại danh sách</span>
+          </a>
+        </div>
+
+        <h2
+          class="text-3xl font-black tracking-tight text-text-main dark:text-white"
+        >
+          Tạo Hợp Đồng Mới
+        </h2>
+        <p class="text-text-secondary dark:text-gray-400 text-base mt-2">
+          Thêm hợp đồng cung cấp vật tư, dịch vụ cho dự án.
+        </p>
+      </div>
+
+      <!-- Form Container -->
+      <div
+        class="bg-white dark:bg-[#1a2632] rounded-xl border border-border-color dark:border-gray-700 shadow-sm p-6"
+      >
+        <form id="contractForm" class="space-y-6">
+          <!-- Basic Information Section -->
+          <div>
+            <h3
+              class="text-lg font-bold text-text-main dark:text-white mb-4 flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined text-primary"
+                >description</span
+              >
+              Thông tin cơ bản
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Số hợp đồng -->
+              <div>
+                <label
+                  for="contractNumber"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Số hợp đồng <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="contractNumber"
+                  name="contractNumber"
+                  placeholder="VD: HD-TT-LV-001"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                />
+                <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">
+                  Định dạng: HD-[Mã bên bán]-[Mã bên mua]-[STT]
+                </p>
+              </div>
+
+              <!-- Ngày hợp đồng -->
+              <div>
+                <label
+                  for="contractDate"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Ngày hợp đồng <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  id="contractDate"
+                  name="contractDate"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                />
+              </div>
+
+              <!-- Dự án -->
+              <div>
+                <label
+                  for="projectId"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Dự án <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="projectId"
+                  name="projectId"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                >
+                  <option value="">Chọn dự án</option>
+                  <!-- Options sẽ được thêm bằng JavaScript -->
+                </select>
+              </div>
+
+              <!-- Loại hợp đồng -->
+              <div>
+                <label
+                  for="type"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Loại hợp đồng <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="type"
+                  name="type"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                >
+                  <option value="">Chọn loại hợp đồng</option>
+                  <option value="buy_main_material">Mua vật tư chính</option>
+                  <option value="buy_accessory">Mua phụ kiện</option>
+                  <option value="service">Dịch vụ</option>
+                  <option value="construction">Thi công</option>
+                  <option value="other">Khác</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parties Section -->
+          <div>
+            <h3
+              class="text-lg font-bold text-text-main dark:text-white mb-4 flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined text-primary">groups</span>
+              Các bên tham gia
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Bên bán -->
+              <div>
+                <label
+                  for="sellerCompanyId"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Bên bán (Công ty cung cấp) <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="sellerCompanyId"
+                  name="sellerCompanyId"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                >
+                  <option value="">Chọn công ty bán</option>
+                  <!-- Options sẽ được thêm bằng JavaScript -->
+                </select>
+              </div>
+
+              <!-- Bên mua -->
+              <div>
+                <label
+                  for="buyerCompanyId"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Bên mua (Công ty mua) <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="buyerCompanyId"
+                  name="buyerCompanyId"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                >
+                  <option value="64a1b2c3d4e5f67890123456">TOÀN THÀNH</option>
+                  <!-- Options sẽ được thêm bằng JavaScript -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contract Details Section -->
+          <div>
+            <h3
+              class="text-lg font-bold text-text-main dark:text-white mb-4 flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined text-primary"
+                >payments</span
+              >
+              Chi tiết hợp đồng
+            </h3>
+
+            <div class="space-y-6">
+              <!-- Mô tả -->
+              <div>
+                <label
+                  for="description"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Mô tả hợp đồng <span class="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="3"
+                  placeholder="VD: Mua 2.580 tấm pin Trina 620W"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Tổng giá trị -->
+              <div>
+                <label
+                  for="totalValue"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Tổng giá trị hợp đồng (VNĐ)
+                  <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="totalValue"
+                  name="totalValue"
+                  placeholder="VD: 4158960000"
+                  min="0"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                />
+                <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">
+                  Số tiền đã bao gồm thuế GTGT (VAT)
+                </p>
+              </div>
+
+              <!-- Ghi chú -->
+              <div>
+                <label
+                  for="notes"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Ghi chú
+                </label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows="2"
+                  placeholder="VD: Hợp đồng cung cấp vật tư chính, thanh toán trong vòng 30 ngày"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payments Section -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3
+                class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined text-primary"
+                  >schedule</span
+                >
+                Thanh toán
+              </h3>
+              <button
+                type="button"
+                id="addPaymentBtn"
+                class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+              >
+                <span class="material-symbols-outlined text-lg">add</span>
+                Thêm thanh toán
+              </button>
+            </div>
+
+            <div id="paymentsContainer" class="space-y-4">
+              <!-- Thanh toán mẫu sẽ được thêm bằng JavaScript -->
+            </div>
+          </div>
+
+          <!-- Status Section -->
+          <div>
+            <h3
+              class="text-lg font-bold text-text-main dark:text-white mb-4 flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined text-primary">status</span>
+              Trạng thái hợp đồng
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  for="status"
+                  class="block text-sm font-medium text-text-secondary dark:text-gray-400 mb-2"
+                >
+                  Trạng thái <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-border-color dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  required
+                >
+                  <option value="active">Đang hoạt động</option>
+                  <option value="pending">Chờ xử lý</option>
+                  <option value="completed">Đã hoàn thành</option>
+                  <option value="cancelled">Đã hủy</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div
+            class="flex items-center justify-between pt-6 border-t border-border-color dark:border-gray-700"
+          >
+            <button
+              type="button"
+              id="cancelBtn"
+              class="px-6 py-3 border border-border-color dark:border-gray-700 text-text-secondary dark:text-gray-400 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              Hủy bỏ
+            </button>
+
+            <div class="flex items-center gap-4">
+              <button
+                type="button"
+                id="saveDraftBtn"
+                class="px-6 py-3 border border-primary text-primary rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+              >
+                Lưu nháp
+              </button>
+
+              <button
+                type="submit"
+                id="submitBtn"
+                class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined">save</span>
+                Tạo hợp đồng
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div
+        id="loadingOverlay"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden"
+      >
+        <div
+          class="bg-white dark:bg-[#1a2632] p-8 rounded-xl shadow-lg text-center"
+        >
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"
+          ></div>
+          <p class="text-text-main dark:text-white text-lg font-medium">
+            Đang xử lý...
+          </p>
+          <p class="text-text-secondary dark:text-gray-400 mt-2">
+            Vui lòng chờ trong giây lát
+          </p>
+        </div>
+      </div>
+
+      <!-- Success Modal -->
+      <div
+        id="successModal"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden"
+      >
+        <div
+          class="bg-white dark:bg-[#1a2632] p-8 rounded-xl shadow-lg text-center max-w-md"
+        >
+          <div
+            class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <span class="material-symbols-outlined text-3xl">check_circle</span>
+          </div>
+          <h3 class="text-xl font-bold text-text-main dark:text-white mb-2">
+            Tạo hợp đồng thành công!
+          </h3>
+          <p class="text-text-secondary dark:text-gray-400 mb-6">
+            Hợp đồng đã được lưu vào hệ thống.
+          </p>
+          <div class="flex gap-3 justify-center">
+            <button
+              id="viewContractBtn"
+              class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+            >
+              Xem hợp đồng
+            </button>
+            <button
+              id="createNewBtn"
+              class="px-6 py-3 border border-border-color dark:border-gray-700 text-text-secondary dark:text-gray-400 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              Tạo mới
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="contract-create.js?v=1.0"></script>
+  </body>
+</html>

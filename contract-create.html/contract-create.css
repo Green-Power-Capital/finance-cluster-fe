@@ -1,0 +1,51 @@
+/* contract-create.css - Additional styles for contract create page */
+
+/* Custom styles for payment items */
+.payment-item {
+  transition: all 0.2s ease;
+}
+
+.payment-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Style for required fields */
+input:required,
+select:required,
+textarea:required {
+  border-left: 3px solid #2b8cee;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .payment-item .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Animation for success modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#successModal > div {
+  animation: fadeIn 0.3s ease-out;
+}

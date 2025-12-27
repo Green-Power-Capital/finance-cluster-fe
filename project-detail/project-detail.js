@@ -360,7 +360,6 @@ function renderProjectDetail(apiProject) {
                           collected
                         )}
                     </p>
-                   
                 </div>
             </div>
             
@@ -390,7 +389,6 @@ function renderProjectDetail(apiProject) {
                           remaining
                         )}
                     </p>
-            
                 </div>
             </div>
         </div>
@@ -515,84 +513,8 @@ function renderProjectDetail(apiProject) {
               </div>
           </div>
 
-          <!-- Thanh % tiền Toàn Thành đã thu và chưa thu -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <!-- Thanh % Tổng tiền Toàn Thành đã thu -->
-              <div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm">
-                  <h3 class="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">trending_up</span>
-                      Tổng tiền Toàn Thành đã thu
-                  </h3>
-                  
-                  <div class="space-y-4">
-                      <div class="flex items-center justify-between">
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Số tiền đã thu</p>
-                              <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">${formatCurrencyWithUnit(
-                                collected
-                              )}</p>
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mt-1">${formatCurrency(
-                                collected
-                              )} VNĐ</p>
-                          </div>
-                          <div class="text-right">
-                              <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">${collectedPercent}%</p>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">so với tổng HĐ</p>
-                          </div>
-                      </div>
-                      
-                      <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                          <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-4 rounded-full" style="width: ${collectedPercent}%"></div>
-                      </div>
-                      
-                      <div class="flex justify-between text-sm">
-                          <span class="text-emerald-600 dark:text-emerald-400">0%</span>
-                          <span class="text-emerald-600 dark:text-emerald-400">25%</span>
-                          <span class="text-emerald-600 dark:text-emerald-400">50%</span>
-                          <span class="text-emerald-600 dark:text-emerald-400">75%</span>
-                          <span class="text-emerald-600 dark:text-emerald-400">100%</span>
-                      </div>
-                  </div>
-              </div>
-
-              <!-- Thanh % Tổng tiền Toàn Thành chưa thu -->
-              <div class="bg-white dark:bg-[#1a2632] p-6 rounded-xl border border-border-color dark:border-gray-700 shadow-sm">
-                  <h3 class="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">trending_down</span>
-                      Tổng tiền Toàn Thành chưa thu
-                  </h3>
-                  
-                  <div class="space-y-4">
-                      <div class="flex items-center justify-between">
-                          <div>
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mb-1">Số tiền chưa thu</p>
-                              <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">${formatCurrencyWithUnit(
-                                remaining
-                              )}</p>
-                              <p class="text-sm text-text-secondary dark:text-gray-400 mt-1">${formatCurrency(
-                                remaining
-                              )} VNĐ</p>
-                          </div>
-                          <div class="text-right">
-                              <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">${remainingPercent}%</p>
-                              <p class="text-sm text-text-secondary dark:text-gray-400">so với tổng HĐ</p>
-                          </div>
-                      </div>
-                      
-                      <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                          <div class="bg-gradient-to-r from-amber-500 to-amber-600 h-4 rounded-full" style="width: ${remainingPercent}%"></div>
-                      </div>
-                      
-                      <div class="flex justify-between text-sm">
-                          <span class="text-amber-600 dark:text-amber-400">0%</span>
-                          <span class="text-amber-600 dark:text-amber-400">25%</span>
-                          <span class="text-amber-600 dark:text-amber-400">50%</span>
-                          <span class="text-amber-600 dark:text-amber-400">75%</span>
-                          <span class="text-amber-600 dark:text-amber-400">100%</span>
-                      </div>
-                  </div>
-              </div>
-          </div>
+          <!-- ĐÃ XÓA: Thanh % tiền Toàn Thành đã thu và chưa thu -->
+          <!-- Phần này đã được bỏ theo yêu cầu -->
       </div>
   `;
 }

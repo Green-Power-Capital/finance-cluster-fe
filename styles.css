@@ -134,3 +134,204 @@
     background-position: -200% 0;
   }
 }
+
+/* Popup modal styles */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.popup-content {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 90%;
+  width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.dark .popup-content {
+  background: #1a2632;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Color styles for expense cards */
+.bg-toanthanh {
+  background-color: #e0f2fe;
+  border-color: #bae6fd;
+}
+
+.dark .bg-toanthanh {
+  background-color: #0c4a6e30;
+  border-color: #07598550;
+}
+
+.bg-lamvu {
+  background-color: #ede9fe;
+  border-color: #ddd6fe;
+}
+
+.dark .bg-lamvu {
+  background-color: #5b21b630;
+  border-color: #6d28d950;
+}
+
+.bg-remaining {
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+
+.dark .bg-remaining {
+  background-color: #92400e30;
+  border-color: #b4530950;
+}
+
+/* Hover effects for clickable cards */
+.clickable-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .clickable-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Table styles inside popup */
+.popup-table-container {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.popup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-table th {
+  background-color: #f8fafc;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .popup-table th {
+  background-color: #253341;
+  color: #94a3b8;
+  border-bottom-color: #374151;
+}
+
+.popup-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+}
+
+.dark .popup-table td {
+  border-bottom-color: #374151;
+  color: #e5e7eb;
+}
+
+.popup-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.dark .popup-table tbody tr:hover {
+  background-color: #2d3748;
+}
+
+/* Styles for grouped project view */
+.project-group {
+  margin-bottom: 2rem;
+}
+
+.project-group:not(:first-child) {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .project-group:not(:first-child) {
+  border-top-color: #374151;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.project-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.project-stats > div {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-small {
+  width: 80px;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-left: auto;
+}
+
+.dark .progress-bar-small {
+  background-color: #4b5563;
+}
+
+/* Thêm style cho table trong popup */
+.popup-table th {
+  white-space: nowrap;
+}
+
+.popup-table td {
+  vertical-align: top;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .popup-content {
+    width: 95%;
+    margin: 1rem;
+  }
+}
